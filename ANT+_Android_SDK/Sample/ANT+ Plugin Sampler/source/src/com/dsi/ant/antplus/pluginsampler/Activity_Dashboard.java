@@ -62,6 +62,7 @@ public class Activity_Dashboard extends FragmentActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+    	Toast.makeText(getApplicationContext(), "PluginSampler", Toast.LENGTH_SHORT).show();
         try
         {
             Log.i("ANT+ Plugin Sampler", "Version: " + getPackageManager().getPackageInfo(getPackageName(), 0).versionName);

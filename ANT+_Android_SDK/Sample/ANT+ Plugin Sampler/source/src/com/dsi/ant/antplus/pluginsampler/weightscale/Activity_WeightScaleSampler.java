@@ -79,6 +79,8 @@ import java.util.EnumSet;
  */
 public class Activity_WeightScaleSampler extends FragmentActivity
 {
+	public static final String TAG = Activity_WeightScaleSampler.class.getSimpleName();
+	
     AntPlusWeightScalePcc wgtPcc = null;
     PccReleaseHandle<AntPlusWeightScalePcc> releaseHandle = null;
 
@@ -238,6 +240,7 @@ public class Activity_WeightScaleSampler extends FragmentActivity
                             @Override
                             public void run()
                             {
+                            	Log.i(TAG, "onNewManufacturerIdentification");
                                 tv_estTimestamp.setText(String.valueOf(estTimestamp));
 
                                 tv_manufacturerID.setText(String.valueOf(manufacturerID));
@@ -264,6 +267,8 @@ public class Activity_WeightScaleSampler extends FragmentActivity
                         @Override
                         public void run()
                         {
+
+                        	Log.i(TAG, "onNewProductInformation");
                             tv_estTimestamp.setText(String.valueOf(estTimestamp));
 
                             tv_mainSoftwareRevision.setText(String
@@ -295,9 +300,11 @@ public class Activity_WeightScaleSampler extends FragmentActivity
                 {
                     runOnUiThread(new Runnable()
                     {
-                        @Override
+
+						@Override
                         public void run()
                         {
+							Log.i(TAG, "subscribeBodyWeightBroadcastEvent received");
                             tv_estTimestamp.setText(String.valueOf(estTimestamp));
 
                             if (bodyWeightStatus == BodyWeightStatus.VALID)
@@ -319,6 +326,7 @@ public class Activity_WeightScaleSampler extends FragmentActivity
                         @Override
                         public void run()
                         {
+                        	Log.i(TAG, "onNewManufacturerSpecificData");
                             tv_estTimestamp.setText(String.valueOf(estTimestamp));
 
                             StringBuffer hexString = new StringBuffer();
@@ -348,6 +356,7 @@ public class Activity_WeightScaleSampler extends FragmentActivity
                 @Override
                 public void run()
                 {
+                	Log.i(TAG, "onDeviceStateChange");
                     tv_status.setText(wgtPcc.getDeviceName() + ": " + newDeviceState);
                     if (newDeviceState == DeviceState.DEAD)
                     {
@@ -367,7 +376,7 @@ public class Activity_WeightScaleSampler extends FragmentActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        Log.e("WeightScale", "onCreate");
+        Log.i(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weightscale);
 
@@ -417,6 +426,7 @@ public class Activity_WeightScaleSampler extends FragmentActivity
             @Override
             public void onClick(View v)
             {
+            	Log.i(TAG, "button_requestBasicMeasurement");
 
                 boolean submitted = wgtPcc.requestBasicMeasurement(new IBasicMeasurementFinishedReceiver()
                 {
@@ -456,6 +466,7 @@ public class Activity_WeightScaleSampler extends FragmentActivity
             @Override
             public void onClick(View v)
             {
+            	Log.i(TAG, "button_requestAdvancedMeasurement");
 
                 boolean submitted = wgtPcc.requestAdvancedMeasurement(new IAdvancedMeasurementFinishedReceiver()
                 {
@@ -594,6 +605,7 @@ public class Activity_WeightScaleSampler extends FragmentActivity
                                     @Override
                                     public void run()
                                     {
+                                    	Log.i(TAG, "onDownloadAllHistoryFinished");
                                         setRequestButtonsEnabled(true);
                                         antFsProgressDialog.dismiss();
 
@@ -643,6 +655,7 @@ public class Activity_WeightScaleSampler extends FragmentActivity
                             public void onNewFitFileDownloaded(
                                 FitFile downloadedFitFile)
                             {
+                            	Log.i(TAG, "onNewFitFileDownloaded");
 
                                 InputStream fitFile = downloadedFitFile.getInputStream();
 
@@ -844,6 +857,7 @@ public class Activity_WeightScaleSampler extends FragmentActivity
      */
     private void resetPcc()
     {
+    	Log.i(TAG, "resetPcc");
         //Release the old access if it exists
         if(releaseHandle != null)
         {
@@ -886,6 +900,7 @@ public class Activity_WeightScaleSampler extends FragmentActivity
 
     private void resetWeightRequestedDataDisplay(String weightValueText)
     {
+    	Log.i(TAG, "resetWeightRequestedDataDisplay");
         tv_bodyWeightResult.setText(weightValueText);
         tv_hydrationPercentage.setText("---");
         tv_bodyFatPercentage.setText("---");
@@ -901,6 +916,7 @@ public class Activity_WeightScaleSampler extends FragmentActivity
 
     private void setRequestButtonsEnabled(boolean enabled)
     {
+    	Log.i(TAG, "setRequestButtonsEnabled");
         button_requestBasicMeasurement.setEnabled(enabled);
         button_requestAdvancedMeasurement.setEnabled(enabled);
         button_requestCapabilities.setEnabled(enabled);
@@ -910,6 +926,7 @@ public class Activity_WeightScaleSampler extends FragmentActivity
 
     private boolean checkRequestResult(WeightScaleRequestStatus status)
     {
+    	Log.i(TAG, "checkRequestResult");
         switch(status)
         {
             case SUCCESS:
@@ -943,6 +960,7 @@ public class Activity_WeightScaleSampler extends FragmentActivity
 
     private void clearLayoutList()
     {
+    	Log.i(TAG, "clearLayoutList");
         if(!layoutControllerList.isEmpty())
         {
             for(Closeable controller : layoutControllerList)
@@ -961,6 +979,7 @@ public class Activity_WeightScaleSampler extends FragmentActivity
     @Override
     protected void onDestroy()
     {
+    	Log.i(TAG, "onDestroy");
         releaseHandle.close();
 
         clearLayoutList();

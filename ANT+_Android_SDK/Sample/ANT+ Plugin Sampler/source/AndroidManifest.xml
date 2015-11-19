@@ -14,8 +14,8 @@ All rights reserved.
     android:versionName="3.6.0" >
 
     <uses-sdk
-        android:minSdkVersion="7"
-        android:targetSdkVersion="16" />
+        android:minSdkVersion="15"
+        android:targetSdkVersion="23" />
 
     <application
         android:allowBackup="true"
