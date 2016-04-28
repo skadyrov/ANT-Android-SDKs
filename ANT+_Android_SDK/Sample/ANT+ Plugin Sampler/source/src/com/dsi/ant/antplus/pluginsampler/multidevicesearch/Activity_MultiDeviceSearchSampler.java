@@ -16,6 +16,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -45,6 +46,8 @@ import com.dsi.ant.plugins.antplus.pccbase.MultiDeviceSearch.MultiDeviceSearchRe
  */
 public class Activity_MultiDeviceSearchSampler extends Activity
 {
+	
+
     /**
      * Relates a MultiDeviceSearchResult with an RSSI value
      */
@@ -58,6 +61,8 @@ public class Activity_MultiDeviceSearchSampler extends Activity
     public static final String FILTER_KEY = "com.dsi.ant.antplus.pluginsampler.multidevicesearch.filter";
     public static final int RESULT_SEARCH_STOPPED = RESULT_FIRST_USER;
 
+    private static final String TAG = Activity_MultiDeviceSearchSampler.class.getSimpleName();
+    
     Context mContext;
     TextView mStatus;
 
@@ -192,8 +197,14 @@ public class Activity_MultiDeviceSearchSampler extends Activity
          */
         public void onDeviceFound(final MultiDeviceSearchResult deviceFound)
         {
+
+        	Log.i(TAG, "######## onDeviceFound");
             final MultiDeviceSearchResultWithRSSI result = new MultiDeviceSearchResultWithRSSI();
             result.mDevice = deviceFound;
+            Log.d(TAG, "foudn device: " + deviceFound.toString());
+            Log.d(TAG, "ANT device number: " + deviceFound.getAntDeviceNumber());
+            Log.d(TAG, "getDeviceDisplayName: " + deviceFound.getDeviceDisplayName());
+            Log.d(TAG, "isPreferredDevice: " + deviceFound.isPreferredDevice());
 
             // We split up devices already connected to the plugin from
             // un-connected devices to make this information more visible to the
@@ -203,9 +214,12 @@ public class Activity_MultiDeviceSearchSampler extends Activity
             {
                 runOnUiThread(new Runnable()
                 {
-                    @Override
+
+					@Override
                     public void run()
                     {
+
+                    	Log.i(TAG, "alreadyConnected");
                         // connected device category is invisible unless there
                         // are some present
                         if (mConnectedAdapter.isEmpty())
@@ -227,6 +241,8 @@ public class Activity_MultiDeviceSearchSampler extends Activity
                     @Override
                     public void run()
                     {
+
+                    	Log.i(TAG, "notConnectedYet");
                         mFoundAdapter.add(result);
                         mFoundAdapter.notifyDataSetChanged();
                     }
@@ -247,6 +263,8 @@ public class Activity_MultiDeviceSearchSampler extends Activity
 
         @Override
         public void onSearchStarted(RssiSupport supportsRssi) {
+
+        	Log.i(TAG, "onSearchStarted");
             if(supportsRssi == RssiSupport.UNAVAILABLE)
             {
                 Toast.makeText(mContext, "Rssi information not available.", Toast.LENGTH_SHORT).show();
